@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../App';
+import { Users, BarChart3, Map as MapIcon, LogOut, Menu, X } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
@@ -9,124 +10,74 @@ const Navbar: React.FC = () => {
   const { logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  const handleMobileNavClick = (path: string) => {
+  const handleNavClick = (path: string) => {
     navigate(path);
     setIsMobileMenuOpen(false);
   };
 
-  const handleMobileLogout = () => {
-    logout();
-    setIsMobileMenuOpen(false);
-  };
+  const isActive = (path: string) => location.pathname === path;
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const navItems = [
+    { path: '/list', label: 'Employees', icon: Users },
+    { path: '/barchart', label: 'Statistics', icon: BarChart3 },
+    { path: '/map', label: 'Map View', icon: MapIcon },
+  ];
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <h2>Employee System</h2>
-      </div>
-      
-      <div className="navbar-menu">
-        <button 
-          className={`nav-button ${isActive('/list') ? 'active' : ''}`}
-          onClick={() => handleMobileNavClick('/list')}
-          data-text="Employee List"
-        >
-          <span className="button-icon">👥</span>
-          <span className="button-text">Employee List</span>
-        </button>
-        
-        <button 
-          className={`nav-button ${isActive('/barchart') ? 'active' : ''}`}
-          onClick={() => handleMobileNavClick('/barchart')}
-          data-text="Bar Chart"
-        >
-          <span className="button-icon">📊</span>
-          <span className="button-text">Bar Chart</span>
-        </button>
-        
-        <button 
-          className={`nav-button ${isActive('/map') ? 'active' : ''}`}
-          onClick={() => handleMobileNavClick('/map')}
-          data-text="Map View"
-        >
-          <span className="button-icon">🗺</span>
-          <span className="button-text">Map View</span>
-        </button>
-      </div>
-      
-      <div className="navbar-actions">
-        <button onClick={logout} className="logout-button">
-          <span className="logout-icon">🚪</span>
-          <span className="logout-text">Logout</span>
-        </button>
-      </div>
-
-      {/* Mobile Menu Toggle */}
-      <button 
-        className="mobile-menu-toggle"
-        onClick={toggleMobileMenu}
-        aria-label="Toggle mobile menu"
-      >
-        <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}></span>
-      </button>
-
-      {/* Mobile Menu */}
-      <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
-        <div className="mobile-menu-header">
-          <h3>Navigation</h3>
+      <div className="navbar-container">
+        <div className="navbar-brand" onClick={() => navigate('/')}>
+          <div className="brand-icon">
+            <Users size={24} />
+          </div>
+          <span className="brand-text">StaffPortal</span>
         </div>
         
-        <div className="mobile-menu-items">
-          <button 
-            className={`mobile-nav-item ${isActive('/list') ? 'active' : ''}`}
-            onClick={() => handleMobileNavClick('/list')}
-          >
-            <span className="mobile-nav-icon">👥</span>
-            <div className="mobile-nav-content">
-              <span className="mobile-nav-title">Employee List</span>
-            </div>
+        <div className="navbar-links">
+          {navItems.map((item) => (
+            <button 
+              key={item.path}
+              className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
+              onClick={() => handleNavClick(item.path)}
+            >
+              <item.icon size={18} />
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </div>
+        
+        <div className="navbar-actions">
+          <button onClick={logout} className="btn-logout" title="Logout">
+            <LogOut size={18} />
+            <span className="logout-text">Logout</span>
           </button>
           
-          <button 
-            className={`mobile-nav-item ${isActive('/barchart') ? 'active' : ''}`}
-            onClick={() => handleMobileNavClick('/barchart')}
-          >
-            <span className="mobile-nav-icon">📊</span>
-            <div className="mobile-nav-content">
-              <span className="mobile-nav-title">Bar Chart</span>
-            </div>
-          </button>
-          
-          <button 
-            className={`mobile-nav-item ${isActive('/map') ? 'active' : ''}`}
-            onClick={() => handleMobileNavClick('/map')}
-          >
-            <span className="mobile-nav-icon">🗺</span>
-            <div className="mobile-nav-content">
-              <span className="mobile-nav-title">Map View</span>
-            </div>
-          </button>
-          
-          <div className="mobile-menu-divider"></div>
-          
-          <button 
-            className="mobile-nav-item mobile-nav-logout"
-            onClick={handleMobileLogout}
-          >
-            <div className="mobile-nav-content">
-              <span className="mobile-nav-title">Logout</span>
-            </div>
+          <button className="mobile-toggle" onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
+
+      {isMobileMenuOpen && (
+        <div className="mobile-nav">
+          {navItems.map((item) => (
+            <button 
+              key={item.path}
+              className={`mobile-nav-link ${isActive(item.path) ? 'active' : ''}`}
+              onClick={() => handleNavClick(item.path)}
+            >
+              <item.icon size={20} />
+              <span>{item.label}</span>
+            </button>
+          ))}
+          <button onClick={logout} className="mobile-nav-link logout">
+            <LogOut size={20} />
+            <span>Logout</span>
+          </button>
+        </div>
+      )}
     </nav>
   );
 };

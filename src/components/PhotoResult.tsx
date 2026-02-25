@@ -1,16 +1,8 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Download, RefreshCcw, Check, ArrowLeft, Calendar, User, Building2 } from 'lucide-react';
+import { Employee } from '../utils/api';
 import './PhotoResult.css';
-
-interface Employee {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  salary: number;
-  department: string;
-}
 
 const PhotoResult: React.FC = () => {
   const location = useLocation();
@@ -20,74 +12,70 @@ const PhotoResult: React.FC = () => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = image;
-    link.download = `employee_${employee.id}_photo.png`;
-    document.body.appendChild(link);
+    link.download = `emp_${employee.id}_photo.png`;
     link.click();
-    document.body.removeChild(link);
-  };
-
-  const goBack = () => {
-    navigate('/list');
-  };
-
-  const retakePhoto = () => {
-    navigate(`/details/${employee.id}`, { state: { employee } });
   };
 
   return (
-    <div className="photo-result-container">
-      <div className="photo-result-header">
-        <button onClick={goBack} className="back-button">← Back to List</button>
-        <h2>Photo Capture Result</h2>
-      </div>
+    <div className="result-page">
+      <header className="page-header">
+        <button onClick={() => navigate('/list')} className="btn-back">
+          <ArrowLeft size={18} />
+          <span>Back</span>
+        </button>
+        <h1>Capture Preview</h1>
+      </header>
 
-      <div className="photo-result-content">
-        <div className="employee-summary">
-          <h3>Employee: {employee.name}</h3>
-          <p>ID: {employee.id} | Department: {employee.department}</p>
+      <div className="result-grid">
+        <div className="photo-card-main">
+          <div className="photo-container">
+            <img src={image} alt="Captured" />
+          </div>
+          <div className="photo-actions-inline">
+            <button onClick={handleDownload} className="btn-primary-ghost">
+              <Download size={18} />
+              <span>Save Photo</span>
+            </button>
+            <button onClick={() => navigate(-1)} className="btn-primary-ghost">
+              <RefreshCcw size={18} />
+              <span>Retake</span>
+            </button>
+          </div>
         </div>
 
-        <div className="photo-display">
-          <div className="photo-frame">
-            <img src={image} alt={employee.name} className="captured-photo" />
-          </div>
-          
-          <div className="photo-info">
-            <h4>Capture Details</h4>
-            <div className="info-grid">
-              <div className="info-item">
-                <span className="label">Employee Name:</span>
-                <span className="value">{employee.name}</span>
+        <div className="info-sidebar">
+          <div className="standard-card">
+            <div className="card-header-styled">
+              <h3>Metadata</h3>
+            </div>
+            <div className="meta-list">
+              <div className="meta-row">
+                <User size={16} />
+                <div className="meta-val">
+                  <label>Employee</label>
+                  <span>{employee.name}</span>
+                </div>
               </div>
-              <div className="info-item">
-                <span className="label">Employee ID:</span>
-                <span className="value">{employee.id}</span>
+              <div className="meta-row">
+                <Building2 size={16} />
+                <div className="meta-val">
+                  <label>Department</label>
+                  <span>{employee.department}</span>
+                </div>
               </div>
-              <div className="info-item">
-                <span className="label">Department:</span>
-                <span className="value">{employee.department}</span>
-              </div>
-              <div className="info-item">
-                <span className="label">Capture Date:</span>
-                <span className="value">{new Date().toLocaleDateString()}</span>
-              </div>
-              <div className="info-item">
-                <span className="label">Capture Time:</span>
-                <span className="value">{new Date().toLocaleTimeString()}</span>
+              <div className="meta-row">
+                <Calendar size={16} />
+                <div className="meta-val">
+                  <label>Captured On</label>
+                  <span>{new Date().toLocaleDateString()}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="action-buttons">
-          <button onClick={handleDownload} className="download-button">
-            📥 Download Photo
-          </button>
-          <button onClick={retakePhoto} className="retake-button">
-            🔄 Retake Photo
-          </button>
-          <button onClick={goBack} className="done-button">
-            ✅ Done
+          <button onClick={() => navigate('/list')} className="btn-finish">
+            <Check size={20} />
+            <span>Finish & Return</span>
           </button>
         </div>
       </div>
