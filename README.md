@@ -1,46 +1,187 @@
-# Getting Started with Create React App
+# Jotish Assignment - Employee Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A ReactJS application with employee data management, photo capture, and data visualization features.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Core Functionality
+- **Login System**: Secure authentication with username/password
+- **Employee List**: Display employee data from REST API
+- **Employee Details**: View detailed information with photo capture
+- **Photo Management**: Capture and download employee photos
+- **Data Visualization**: Interactive charts and maps
 
-### `npm start`
+### Creative Features
+- **Bar Chart Visualization**: Salary distribution for first 10 employees
+- **Interactive Map**: Geographic distribution of employees across cities
+- **Modern UI**: Responsive design with gradient themes and animations
+- **Photo Capture**: WebRTC-based camera integration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Project Structure
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+jotish-assignment/
+├── src/
+│   ├── components/
+│   │   ├── Login.tsx          # Login page with authentication
+│   │   ├── List.tsx           # Employee list with API integration
+│   │   ├── Details.tsx        # Employee details with photo capture
+│   │   ├── PhotoResult.tsx    # Photo display and download
+│   │   ├── BarChart.tsx       # Salary visualization
+│   │   └── MapView.tsx        # Geographic employee distribution
+│   ├── App.tsx                # Main application with routing
+│   └── App.css                # Global styles
+├── public/
+│   └── index.html             # HTML template with Leaflet CSS
+└── package.json              # Dependencies and scripts
+```
 
-### `npm test`
+## Technology Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React 18** with TypeScript
+- **React Router** for navigation
+- **Axios** for API calls
+- **Chart.js** with react-chartjs-2 for data visualization
+- **Leaflet** with react-leaflet for maps
+- **CSS3** with modern gradients and animations
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd jotish-assignment
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Install dependencies:
+```bash
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Start the development server:
+```bash
+npm start
+```
 
-### `npm run eject`
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Login
+- **Username**: `testuser`
+- **Password**: `Test123`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Navigation Flow
+1. Login → Employee List
+2. Click any employee → Employee Details
+3. Capture photo → Photo Result
+4. Access visualizations from the list page
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### API Integration
+The application fetches data from:
+```
+POST https://backend.jotish.in/backend_dev/gettabledata.php
+```
+With payload:
+```json
+{
+   "username":"test",
+   "password":"123456"
+}
+```
 
-## Learn More
+## Pages Description
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Login Page
+- Clean gradient design
+- Form validation
+- Error handling for invalid credentials
+- Responsive layout
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 2. Employee List Page
+- Tabular display of employee data
+- Click-to-view details functionality
+- Navigation to visualizations
+- Logout functionality
+- Loading states and error handling
+
+### 3. Employee Details Page
+- Comprehensive employee information display
+- WebRTC camera integration
+- Real-time photo capture
+- Modern card-based layout
+
+### 4. Photo Result Page
+- Captured photo display
+- Download functionality
+- Capture metadata
+- Retake photo option
+
+### 5. Bar Chart Visualization
+- Interactive salary chart
+- Statistical summaries
+- Animated chart rendering
+- Responsive design
+
+### 6. Map Visualization
+- Geographic employee distribution
+- Interactive markers with popups
+- City-wise employee counts
+- OpenStreetMap integration
+
+## Key Features Implemented
+
+### Security
+- Authentication system with localStorage
+- Route protection
+- Input validation
+
+### User Experience
+- Loading spinners
+- Error boundaries
+- Smooth transitions
+- Hover effects
+- Mobile responsive design
+
+### Data Handling
+- Async API calls
+- Error handling
+- Data transformation
+- State management
+
+### Creative Elements
+- Gradient backgrounds
+- Card-based layouts
+- Interactive charts
+- Map visualization
+- Photo capture with WebRTC
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `build` folder.
+
+## Browser Compatibility
+
+- Chrome/Edge (recommended)
+- Firefox
+- Safari
+- Requires HTTPS for camera functionality in production
+
+## Notes
+
+- Camera functionality requires HTTPS in production environments
+- Map tiles are loaded from OpenStreetMap
+- All data is fetched from the provided API endpoint
+- The application is fully responsive and works on mobile devices
+
+## Author
+
+Developed as a technical assignment for Jotish company internship position.
+
+---
+
+**Note**: This project demonstrates proficiency in React development, API integration, data visualization, and modern web development practices.
