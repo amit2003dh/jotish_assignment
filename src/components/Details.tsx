@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Employee } from '../utils/api';
 import { ArrowLeft, MapPin, Building2, Calendar, DollarSign, Camera, Download } from 'lucide-react';
 import MapView from './MapView';
@@ -18,6 +18,34 @@ const Details: React.FC = () => {
   }, [employee, navigate]);
 
   if (!employee) return null;
+
+  const handleExportData = () => {
+    if (!employee) return;
+    
+    const exportData = {
+      employee: {
+        id: employee.id,
+        name: employee.name,
+        department: employee.department,
+        city: employee.city,
+        salary: employee.salary,
+        date: employee.date
+      },
+      exportTimestamp: new Date().toISOString(),
+      photoCaptured: !!capturedImage
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `employee_${employee.name.replace(/\s+/g, '_')}_data.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="details-page">
@@ -94,7 +122,7 @@ const Details: React.FC = () => {
                   <Camera size={18} />
                   <span>Capture Photo</span>
                 </button>
-                <button className="btn-secondary-action">
+                <button onClick={handleExportData} className="btn-secondary-action">
                   <Download size={18} />
                   <span>Export Data</span>
                 </button>

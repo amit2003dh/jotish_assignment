@@ -9,17 +9,33 @@ const Camera: React.FC = () => {
   const navigate = useNavigate();
   const employee = location.state?.employee as Employee;
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const startCamera = async () => {
     try {
+      setIsLoading(true);
+      // Stop any existing stream first
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+      }
+      
       const mediaStream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'user' } 
       });
       setStream(mediaStream);
-      if (videoRef.current) videoRef.current.srcObject = mediaStream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+        // Wait for video to be ready
+        videoRef.current.onloadedmetadata = () => {
+          setIsLoading(false);
+        };
+      }
     } catch (err) {
+      console.error('Camera access error:', err);
+      setIsLoading(false);
       alert('Camera access denied. Please check permissions.');
       navigate(-1);
     }
@@ -39,12 +55,41 @@ const Camera: React.FC = () => {
     }
   };
 
+  const capturePreview = () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      canvas.width = 200;
+      canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        // Draw video frame centered and cropped
+        const size = Math.min(video.videoWidth, video.videoHeight);
+        const x = (video.videoWidth - size) / 2;
+        const y = (video.videoHeight - size) / 2;
+        ctx.drawImage(video, x, y, size, size, 0, 0, 200, 200);
+        setPreviewImage(canvas.toDataURL('image/png'));
+      }
+    }
+  };
+
   useEffect(() => {
-    const s = startCamera();
+    startCamera();
+    
+    // Capture preview every 2 seconds
+    const previewInterval = setInterval(() => {
+      if (!isLoading && videoRef.current) {
+        capturePreview();
+      }
+    }, 2000);
+    
     return () => {
-      stream?.getTracks().forEach(t => t.stop());
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+      }
+      clearInterval(previewInterval);
     };
-  }, [stream]);
+  }, []);
 
   if (!employee) return null;
 
@@ -61,8 +106,25 @@ const Camera: React.FC = () => {
       </div>
 
       <div className="camera-viewport">
-        <video ref={videoRef} autoPlay playsInline />
-        <div className="camera-guide"></div>
+        <video 
+          ref={videoRef} 
+          autoPlay 
+          playsInline 
+          style={{ opacity: isLoading ? 0 : 1 }} 
+        />
+        {!isLoading && <div className="camera-guide"></div>}
+        {isLoading && (
+          <div className="camera-loading">
+            <div className="loading-spinner"></div>
+            <p>Initializing camera...</p>
+          </div>
+        )}
+        {previewImage && !isLoading && (
+          <div className="camera-preview">
+            <img src={previewImage} alt="Preview" />
+            <span>Live Preview</span>
+          </div>
+        )}
         <canvas ref={canvasRef} style={{ display: 'none' }} />
       </div>
 

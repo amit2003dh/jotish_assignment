@@ -4,7 +4,7 @@ import { api, Employee } from '../utils/api';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Users } from 'lucide-react';
+import { Users, MapPin } from 'lucide-react';
 import './MapView.css';
 
 // Fix for default marker icon
@@ -26,20 +26,21 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
   const [cityLocations, setCityLocations] = useState<CityLocation[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
+    'New York': { lat: 40.7128, lng: -74.0060 },
+    'Los Angeles': { lat: 34.0522, lng: -118.2437 },
+    'Chicago': { lat: 41.8781, lng: -87.6298 },
+    'Houston': { lat: 29.7604, lng: -95.3698 },
+    'Phoenix': { lat: 33.4484, lng: -112.0740 },
+    'London': { lat: 51.5074, lng: -0.1278 },
+    'Mumbai': { lat: 19.0760, lng: 72.8777 },
+    'Dubai': { lat: 25.2048, lng: 55.2708 },
+    'San Francisco': { lat: 37.7749, lng: -122.4194 },
+    'Edinburgh': { lat: 55.9533, lng: -3.1883 },
+    'Tokyo': { lat: 35.6762, lng: 139.6503 },
+  };
+
   useEffect(() => {
-    const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
-      'New York': { lat: 40.7128, lng: -74.0060 },
-      'Los Angeles': { lat: 34.0522, lng: -118.2437 },
-      'Chicago': { lat: 41.8781, lng: -87.6298 },
-      'Houston': { lat: 29.7604, lng: -95.3698 },
-      'Phoenix': { lat: 33.4484, lng: -112.0740 },
-      'London': { lat: 51.5074, lng: -0.1278 },
-      'Mumbai': { lat: 19.0760, lng: 72.8777 },
-      'Dubai': { lat: 25.2048, lng: 55.2708 },
-      'San Francisco': { lat: 37.7749, lng: -122.4194 },
-      'Edinburgh': { lat: 55.9533, lng: -3.1883 },
-      'Tokyo': { lat: 35.6762, lng: 139.6503 },
-    };
 
     const fetchData = async () => {
       try {
@@ -66,7 +67,7 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
     fetchData();
   }, []);
 
-  if (loading) return <div className="map-loader">Syncing geographic data...</div>;
+  if (loading && !forceCity) return <div className="map-loader">Syncing geographic data...</div>;
 
   const initialCenter: [number, number] = forceCity ? 
     [cityCoordinates[forceCity]?.lat || 40.7128, 
@@ -76,6 +77,16 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
   const filteredLocations = forceCity 
     ? cityLocations.filter(loc => loc.city === forceCity)
     : cityLocations;
+
+  // If forceCity is specified but no locations found, create a default marker
+  const displayLocations = forceCity && filteredLocations.length === 0 
+    ? [{
+        city: forceCity,
+        lat: cityCoordinates[forceCity]?.lat || 40.7128,
+        lng: cityCoordinates[forceCity]?.lng || -74.0060,
+        employees: []
+      }]
+    : filteredLocations;
 
   return (
     <div className={`map-page ${forceCity ? 'embedded' : ''}`}>
@@ -95,14 +106,14 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
             scrollWheelZoom={!forceCity}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            {filteredLocations.map((loc, i) => (
+            {displayLocations.map((loc, i) => (
               <Marker key={i} position={[loc.lat, loc.lng]}>
                 <Popup>
                   <div className="map-popup">
                     <h4>{loc.city}</h4>
                     <div className="popup-stat">
                       <Users size={14} />
-                      <span>{loc.employees.length} Personnel</span>
+                      <span>{loc.employees.length} Employees</span>
                     </div>
                   </div>
                 </Popup>

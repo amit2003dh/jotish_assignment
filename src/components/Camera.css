@@ -1,10 +1,11 @@
 .camera-overlay {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   z-index: 100;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .camera-header-floating {
@@ -13,12 +14,19 @@
   left: 0;
   right: 0;
   padding: 2rem;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+  backdrop-filter: blur(10px);
   color: white;
   display: flex;
   align-items: center;
   gap: 1.5rem;
   z-index: 10;
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .btn-close {
@@ -36,6 +44,22 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  margin: 1rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: fadeInScale 0.6s ease-out 0.3s both;
+}
+
+@keyframes fadeInScale {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
 }
 
 .camera-viewport video {
@@ -48,9 +72,27 @@
   position: absolute;
   width: 280px;
   height: 380px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 3px solid rgba(255, 255, 255, 0.6);
   border-radius: 2rem;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4), 
+              0 0 30px rgba(255, 255, 255, 0.3),
+              inset 0 0 30px rgba(255, 255, 255, 0.1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4), 
+                0 0 30px rgba(255, 255, 255, 0.3),
+                inset 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+  50% { 
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4), 
+                0 0 50px rgba(255, 255, 255, 0.5),
+                inset 0 0 30px rgba(255, 255, 255, 0.2);
+  }
 }
 
 .camera-actions-floating {
@@ -59,20 +101,53 @@
   left: 0;
   right: 0;
   padding: 3rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: space-around;
   z-index: 10;
+  animation: slideUp 0.5s ease-out 0.6s both;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .btn-shutter {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: white;
-  padding: 4px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  padding: 6px;
   border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+              0 0 0 3px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+  animation: shutterAppear 0.5s ease-out 0.8s both;
+  cursor: pointer;
+}
+
+.btn-shutter:hover {
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+              0 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.btn-shutter:active {
+  transform: scale(0.95);
+}
+
+@keyframes shutterAppear {
+  from { 
+    opacity: 0; 
+    transform: scale(0) rotate(180deg); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) rotate(0deg); 
+  }
 }
 
 .shutter-inner {
@@ -84,13 +159,130 @@
 }
 
 .btn-util {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
   color: white;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+  animation: utilAppear 0.5s ease-out 0.9s both;
+  cursor: pointer;
+}
+
+.btn-util:hover {
+  background: rgba(255,255,255,0.25);
+  transform: scale(1.1);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.btn-util:active {
+  transform: scale(0.95);
+}
+
+@keyframes utilAppear {
+  from { 
+    opacity: 0; 
+    transform: scale(0) rotate(-90deg); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) rotate(0deg); 
+  }
+}
+
+.camera-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.camera-viewport video {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.camera-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 5;
+  animation: previewAppear 0.6s ease-out 1.2s both;
+}
+
+@keyframes previewAppear {
+  from { 
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0.5); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+  }
+}
+
+.camera-preview img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+              0 0 0 2px rgba(255, 255, 255, 0.5),
+              inset 0 0 20px rgba(255, 255, 255, 0.2);
+  object-fit: cover;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.camera-preview:hover img {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5),
+              0 0 0 3px rgba(255, 255, 255, 0.7),
+              inset 0 0 25px rgba(255, 255, 255, 0.3);
+}
+
+.camera-preview span {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 1024px) {
+  .camera-preview img {
+    width: 100px;
+    height: 100px;
+  }
 }

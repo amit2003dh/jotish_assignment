@@ -104,6 +104,13 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
+  display: block;
+}
+
+.mini-stat-card small {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .promo-card {

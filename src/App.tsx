@@ -84,40 +84,42 @@ function AppContent() {
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, logout }}>
       <div className="App">
         {shouldShowNavbar && <Navbar />}
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/list" element={
-            <ProtectedRoute>
-              <List />
-            </ProtectedRoute>
-          } />
-          <Route path="/details/:id" element={
-            <ProtectedRoute>
-              <Details />
-            </ProtectedRoute>
-          } />
-          <Route path="/camera" element={
-            <ProtectedRoute>
-              <Camera />
-            </ProtectedRoute>
-          } />
-          <Route path="/photo-result" element={
-            <ProtectedRoute>
-              <PhotoResult />
-            </ProtectedRoute>
-          } />
-          <Route path="/barchart" element={
-            <ProtectedRoute>
-              <BarChart />
-            </ProtectedRoute>
-          } />
-          <Route path="/map" element={
-            <ProtectedRoute>
-              <MapView />
-            </ProtectedRoute>
-          } />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/list" element={
+              <ProtectedRoute>
+                <List />
+              </ProtectedRoute>
+            } />
+            <Route path="/details/:id" element={
+              <ProtectedRoute>
+                <Details />
+              </ProtectedRoute>
+            } />
+            <Route path="/camera" element={
+              <ProtectedRoute>
+                <Camera />
+              </ProtectedRoute>
+            } />
+            <Route path="/photo-result" element={
+              <ProtectedRoute>
+                <PhotoResult />
+              </ProtectedRoute>
+            } />
+            <Route path="/barchart" element={
+              <ProtectedRoute>
+                <BarChart />
+              </ProtectedRoute>
+            } />
+            <Route path="/map" element={
+              <ProtectedRoute>
+                <MapView />
+              </ProtectedRoute>
+            } />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
       </div>
     </AuthContext.Provider>
   );

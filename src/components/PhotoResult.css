@@ -1,5 +1,9 @@
 .result-page {
   animation: fadeIn 0.4s ease-out;
+  padding: 0.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .result-grid {
@@ -17,17 +21,23 @@
 }
 
 .photo-container {
-  aspect-ratio: 4/3;
+  aspect-ratio: 2/3;
+  max-width: 250px;
+  max-height: 375px;
+  margin: 0 auto 1.5rem;
   background: #000;
   border-radius: 0.75rem;
   overflow: hidden;
-  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .photo-container img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .photo-actions-inline {
@@ -100,7 +110,70 @@
 }
 
 @media (max-width: 1024px) {
+  .result-page {
+    padding: 0.25rem;
+  }
+  
   .result-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .photo-card-main {
+    padding: 1rem;
+  }
+  
+  .photo-container {
+    max-width: 200px;
+    max-height: 300px;
+    margin: 0 auto 1rem;
+  }
+  
+  .photo-actions-inline {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .btn-primary-ghost {
+    padding: 0.875rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .result-page {
+    padding: 0.125rem;
+  }
+  
+  .result-grid {
+    gap: 0.75rem;
+  }
+  
+  .photo-card-main {
+    padding: 0.75rem;
+  }
+  
+  .photo-container {
+    max-width: 180px;
+    max-height: 270px;
+    margin: 0 auto 0.75rem;
+  }
+  
+  .info-sidebar {
+    gap: 1rem;
+  }
+  
+  .meta-list {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .meta-row {
+    padding: 0.75rem;
+  }
+  
+  .btn-finish {
+    padding: 1rem;
+    font-size: 0.875rem;
   }
 }

@@ -82,6 +82,11 @@ const BarChart: React.FC = () => {
   if (loading) return null;
 
   const avgSalary = Math.round(topEmployees.reduce((a, b) => a + b.salary, 0) / topEmployees.length);
+  
+  // Find the actual top earner from all employees
+  const topEarner = employees.reduce((max, emp) => 
+    emp.salary > max.salary ? emp : max, employees[0] || { name: 'N/A', salary: 0 }
+  );
 
   return (
     <div className="stats-page">
@@ -92,7 +97,7 @@ const BarChart: React.FC = () => {
         </button>
         <div className="title-group">
           <h1>Compensation Analytics</h1>
-          <p>Visualizing salary distributions across top-performing personnel.</p>
+          <p>Visualizing salary distributions across top-performing employees.</p>
         </div>
       </header>
 
@@ -131,7 +136,8 @@ const BarChart: React.FC = () => {
             <div className="mini-icon purple"><Award size={20} /></div>
             <div>
               <label>Top Earner</label>
-              <strong>{topEmployees[0]?.name || 'N/A'}</strong>
+              <strong>{topEarner.name}</strong>
+              <small>${topEarner.salary.toLocaleString()}</small>
             </div>
           </div>
 

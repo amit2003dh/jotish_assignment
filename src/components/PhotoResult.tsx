@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Download, RefreshCcw, Check, ArrowLeft, Calendar, User, Building2 } from 'lucide-react';
+import { Download, RefreshCcw, Check, Calendar, User, Building2 } from 'lucide-react';
 import { Employee } from '../utils/api';
 import './PhotoResult.css';
 
@@ -23,14 +23,6 @@ const PhotoResult: React.FC = () => {
 
   return (
     <div className="result-page">
-      <header className="page-header">
-        <button onClick={() => navigate('/list')} className="btn-back">
-          <ArrowLeft size={18} />
-          <span>Back</span>
-        </button>
-        <h1>Capture Preview</h1>
-      </header>
-
       <div className="result-grid">
         <div className="photo-card-main">
           <div className="photo-container">

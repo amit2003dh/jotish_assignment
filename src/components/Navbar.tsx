@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
           <div className="brand-icon">
             <Users size={24} />
           </div>
-          <span className="brand-text">StaffPortal</span>
+          <span className="brand-text">Jotish</span>
         </div>
         
         <div className="navbar-links">

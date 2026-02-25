@@ -1,187 +1,124 @@
-# Jotish Assignment - Employee Management System
+## Jotish Assignment
 
-A ReactJS application with employee data management, photo capture, and data visualization features.
+## Employee Management System
 
-## Features
+A modern React + TypeScript web application for managing employee data with authentication, visualization, and real-time photo capture.
 
-### Core Functionality
-- **Login System**: Secure authentication with username/password
-- **Employee List**: Display employee data from REST API
-- **Employee Details**: View detailed information with photo capture
-- **Photo Management**: Capture and download employee photos
-- **Data Visualization**: Interactive charts and maps
+Designed with scalability, UX clarity, and production-readiness in mind.
 
-### Creative Features
-- **Bar Chart Visualization**: Salary distribution for first 10 employees
-- **Interactive Map**: Geographic distribution of employees across cities
-- **Modern UI**: Responsive design with gradient themes and animations
-- **Photo Capture**: WebRTC-based camera integration
+##  Key Highlights
+
+ Secure Authentication (testuser / Test123)
+
+ Employee Data from External REST API
+
+ WebRTC Camera Integration (Photo Capture + Download)
+
+ Interactive Salary Bar Charts
+
+ Live Geographic Employee Map
+
+ Modern Gradient UI with Responsive Layout
+
+ Clean Architecture & Component-Based Structure
+
+##  Tech Stack
+
+| Layer           | Technology                    |
+| --------------- | ----------------------------- |
+| Framework       | React 18 (CRA)                |
+| Language        | TypeScript 4.9                |
+| Routing         | React Router                  |
+| API             | Axios                         |
+| Charts          | Chart.js + react-chartjs-2    |
+| Maps            | Leaflet + react-leaflet       |
+| Styling         | CSS3 (Gradients + Animations) |
+| Build           | react-scripts                 |
+| Package Manager | npm                           |
 
 ## Project Structure
 
-```
-jotish-assignment/
-├── src/
-│   ├── components/
-│   │   ├── Login.tsx          # Login page with authentication
-│   │   ├── List.tsx           # Employee list with API integration
-│   │   ├── Details.tsx        # Employee details with photo capture
-│   │   ├── PhotoResult.tsx    # Photo display and download
-│   │   ├── BarChart.tsx       # Salary visualization
-│   │   └── MapView.tsx        # Geographic employee distribution
-│   ├── App.tsx                # Main application with routing
-│   └── App.css                # Global styles
-├── public/
-│   └── index.html             # HTML template with Leaflet CSS
-└── package.json              # Dependencies and scripts
-```
+src/
+  components/
+    Login.tsx
+    List.tsx
+    Details.tsx
+    PhotoResult.tsx
+    BarChart.tsx
+    MapView.tsx
+  utils/
+    api.ts
+  App.tsx
+public/
+  index.html
 
-## Technology Stack
+## Authentication
 
-- **React 18** with TypeScript
-- **React Router** for navigation
-- **Axios** for API calls
-- **Chart.js** with react-chartjs-2 for data visualization
-- **Leaflet** with react-leaflet for maps
-- **CSS3** with modern gradients and animations
+### Login Credentials
 
-## Installation
+Username: testuser
+Password: Test123
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd jotish-assignment
-```
+## API Integration
 
-2. Install dependencies:
-```bash
-npm install
-```
+### Endpoint
 
-3. Start the development server:
-```bash
-npm start
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Usage
-
-### Login
-- **Username**: `testuser`
-- **Password**: `Test123`
-
-### Navigation Flow
-1. Login → Employee List
-2. Click any employee → Employee Details
-3. Capture photo → Photo Result
-4. Access visualizations from the list page
-
-### API Integration
-The application fetches data from:
-```
 POST https://backend.jotish.in/backend_dev/gettabledata.php
-```
-With payload:
-```json
+
+Payload
+
 {
-   "username":"test",
-   "password":"123456"
+  "username": "test",
+  "password": "123456"
 }
-```
 
-## Pages Description
+Handles:
 
-### 1. Login Page
-- Clean gradient design
-- Form validation
-- Error handling for invalid credentials
-- Responsive layout
+Async data fetching
 
-### 2. Employee List Page
-- Tabular display of employee data
-- Click-to-view details functionality
-- Navigation to visualizations
-- Logout functionality
-- Loading states and error handling
+Error states
 
-### 3. Employee Details Page
-- Comprehensive employee information display
-- WebRTC camera integration
-- Real-time photo capture
-- Modern card-based layout
+Loading states
 
-### 4. Photo Result Page
-- Captured photo display
-- Download functionality
-- Capture metadata
-- Retake photo option
+Data transformation
 
-### 5. Bar Chart Visualization
-- Interactive salary chart
-- Statistical summaries
-- Animated chart rendering
-- Responsive design
+## Visual Features
+### Salary Distribution (Bar Chart)
 
-### 6. Map Visualization
-- Geographic employee distribution
-- Interactive markers with popups
-- City-wise employee counts
-- OpenStreetMap integration
+Displays salary data of first 10 employees
 
-## Key Features Implemented
+Animated rendering
 
-### Security
-- Authentication system with localStorage
-- Route protection
-- Input validation
+Responsive scaling
 
-### User Experience
-- Loading spinners
-- Error boundaries
-- Smooth transitions
-- Hover effects
-- Mobile responsive design
+Geographic Distribution (Map)
 
-### Data Handling
-- Async API calls
-- Error handling
-- Data transformation
-- State management
+City-wise employee grouping
 
-### Creative Elements
-- Gradient backgrounds
-- Card-based layouts
-- Interactive charts
-- Map visualization
-- Photo capture with WebRTC
+Interactive markers
 
-## Build for Production
+OpenStreetMap integration
 
-```bash
-npm run build
-```
+ Photo Capture
 
-This creates an optimized production build in the `build` folder.
+WebRTC camera access
 
-## Browser Compatibility
+Live preview
 
-- Chrome/Edge (recommended)
-- Firefox
-- Safari
-- Requires HTTPS for camera functionality in production
+Snapshot capture
 
-## Notes
+Downloadable image
 
-- Camera functionality requires HTTPS in production environments
-- Map tiles are loaded from OpenStreetMap
-- All data is fetched from the provided API endpoint
-- The application is fully responsive and works on mobile devices
+Retake functionality
 
-## Author
+Note: Camera requires HTTPS in production.
 
-Developed as a technical assignment for Jotish company internship position.
+## Development Setup
+git clone <https://github.com/amit2003dh/Jotish__Assignment.git>
+cd jotish-assignment
+npm install
+npm start
 
----
+Open:
 
-**Note**: This project demonstrates proficiency in React development, API integration, data visualization, and modern web development practices.
+http://localhost:3000

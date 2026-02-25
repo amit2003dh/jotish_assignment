@@ -63,6 +63,33 @@
   border-radius: 0.25rem;
 }
 
+.map-page.embedded {
+  background: transparent;
+  padding: 0;
+}
+
+.map-page.embedded .map-layout-with-list {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.map-page.embedded .map-container-main {
+  height: 100%;
+}
+
+.map-page.embedded .map-sidebar-list {
+  display: none;
+}
+
+.map-page.embedded .map-container-main {
+  min-height: 400px;
+}
+
+.map-page.embedded .leaflet-container {
+  height: 400px !important;
+  width: 100% !important;
+}
+
 @media (max-width: 1024px) {
   .map-layout-with-list {
     grid-template-columns: 1fr;

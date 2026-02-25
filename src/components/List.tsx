@@ -70,7 +70,7 @@ const List: React.FC = () => {
     <div className="list-page">
       <header className="page-header">
         <div className="header-info">
-          <h1>Workforce Directory</h1>
+          <h1>Employee List</h1>
           <p>Manage and monitor your global team across departments.</p>
         </div>
         <div className="header-actions">
