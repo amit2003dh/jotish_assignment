@@ -9,6 +9,7 @@ const Details: React.FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const employee = state?.employee as Employee | null;
+  const [capturedImage, setCapturedImage] = useState<string | null>(localStorage.getItem(`photo_${employee?.id}`) || null);
 
   useEffect(() => {
     if (!employee) {
@@ -31,7 +32,11 @@ const Details: React.FC = () => {
             <div className="profile-card">
               <div className="profile-header-main">
                 <div className="profile-avatar-large">
-                  {employee.name.charAt(0)}
+                  {capturedImage ? (
+                    <img src={capturedImage} alt={employee.name} style={{ width: '100%', height: '100%', borderRadius: 'inherit', objectFit: 'cover' }} />
+                  ) : (
+                    employee.name.charAt(0)
+                  )}
                 </div>
                 <div className="profile-meta">
                   <h1>{employee.name}</h1>
@@ -104,7 +109,7 @@ const Details: React.FC = () => {
                 <h2>Base Location</h2>
               </div>
               <div className="map-embed">
-                 <MapView />
+                 <MapView forceCity={employee.city} />
               </div>
             </div>
           </div>

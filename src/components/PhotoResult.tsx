@@ -16,6 +16,11 @@ const PhotoResult: React.FC = () => {
     link.click();
   };
 
+  const handleSave = () => {
+    localStorage.setItem(`photo_${employee.id}`, image);
+    navigate(`/details/${employee.id}`, { state: { employee } });
+  };
+
   return (
     <div className="result-page">
       <header className="page-header">
@@ -32,9 +37,13 @@ const PhotoResult: React.FC = () => {
             <img src={image} alt="Captured" />
           </div>
           <div className="photo-actions-inline">
+            <button onClick={handleSave} className="btn-primary-ghost">
+              <Check size={18} />
+              <span>Save as Profile</span>
+            </button>
             <button onClick={handleDownload} className="btn-primary-ghost">
               <Download size={18} />
-              <span>Save Photo</span>
+              <span>Download</span>
             </button>
             <button onClick={() => navigate(-1)} className="btn-primary-ghost">
               <RefreshCcw size={18} />

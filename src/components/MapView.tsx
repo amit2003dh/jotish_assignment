@@ -36,6 +36,9 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
       'London': { lat: 51.5074, lng: -0.1278 },
       'Mumbai': { lat: 19.0760, lng: 72.8777 },
       'Dubai': { lat: 25.2048, lng: 55.2708 },
+      'San Francisco': { lat: 37.7749, lng: -122.4194 },
+      'Edinburgh': { lat: 55.9533, lng: -3.1883 },
+      'Tokyo': { lat: 35.6762, lng: 139.6503 },
     };
 
     const fetchData = async () => {
@@ -66,9 +69,13 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
   if (loading) return <div className="map-loader">Syncing geographic data...</div>;
 
   const initialCenter: [number, number] = forceCity ? 
-    [cityLocations.find(l => l.city === forceCity)?.lat || 40.7128, 
-     cityLocations.find(l => l.city === forceCity)?.lng || -74.0060] : 
+    [cityCoordinates[forceCity]?.lat || 40.7128, 
+     cityCoordinates[forceCity]?.lng || -74.0060] : 
     [40.7128, -74.0060];
+
+  const filteredLocations = forceCity 
+    ? cityLocations.filter(loc => loc.city === forceCity)
+    : cityLocations;
 
   return (
     <div className={`map-page ${forceCity ? 'embedded' : ''}`}>
@@ -79,35 +86,56 @@ const MapView: React.FC<{ forceCity?: string }> = ({ forceCity }) => {
         </header>
       )}
 
-      <div className="map-container-main">
-        <MapContainer 
-          center={initialCenter} 
-          zoom={forceCity ? 10 : 3} 
-          style={{ height: forceCity ? '100%' : '600px', width: '100%' }}
-          scrollWheelZoom={!forceCity}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {cityLocations.map((loc, i) => (
-            <Marker key={i} position={[loc.lat, loc.lng]}>
-              <Popup>
-                <div className="map-popup">
-                  <h4>{loc.city}</h4>
-                  <div className="popup-stat">
-                    <Users size={14} />
-                    <span>{loc.employees.length} Personnel</span>
+      <div className="map-layout-with-list">
+        <div className="map-container-main">
+          <MapContainer 
+            center={initialCenter} 
+            zoom={forceCity ? 10 : 3} 
+            style={{ height: forceCity ? '100%' : '600px', width: '100%' }}
+            scrollWheelZoom={!forceCity}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {filteredLocations.map((loc, i) => (
+              <Marker key={i} position={[loc.lat, loc.lng]}>
+                <Popup>
+                  <div className="map-popup">
+                    <h4>{loc.city}</h4>
+                    <div className="popup-stat">
+                      <Users size={14} />
+                      <span>{loc.employees.length} Personnel</span>
+                    </div>
                   </div>
-                  <div className="popup-list">
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
+
+        {!forceCity && (
+          <div className="map-sidebar-list">
+            <h3>Locations</h3>
+            <div className="location-list">
+              {cityLocations.map((loc, i) => (
+                <div key={i} className="location-item-card">
+                  <div className="loc-header">
+                    <MapPin size={16} />
+                    <strong>{loc.city}</strong>
+                  </div>
+                  <div className="loc-count">
+                    <Users size={14} />
+                    <span>{loc.employees.length} Employees</span>
+                  </div>
+                  <div className="loc-emp-previews">
                     {loc.employees.slice(0, 3).map(e => (
-                      <div key={e.id} className="popup-emp">
-                        {e.name} • {e.department}
-                      </div>
+                      <span key={e.id} className="mini-badge">{e.name}</span>
                     ))}
+                    {loc.employees.length > 3 && <span>+{loc.employees.length - 3} more</span>}
                   </div>
                 </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
