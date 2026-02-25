@@ -118,7 +118,9 @@ git clone <https://github.com/amit2003dh/jotish_Assignment.git>
 
 
 cd jotish-assignment
+
 npm install
+
 npm start
 
 Open:
